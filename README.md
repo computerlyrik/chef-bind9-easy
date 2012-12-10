@@ -1,35 +1,32 @@
-Description
-===========
+# Description
+Autoconfigures bind9 Server the easy way.
 
-Autoconfigures bind9 Server.
-Uses chef search and user input to find all clients.
+Implements a Zone LWRP searching chef and using user input to find all clients.
 
-Implements a Zone LWRP which sets up forward and reverse zones.
+Supports
+- Forwarders
+- Transfer servers
+- Custom zone entries
+- Reverse zones
 
-
-Requirements
-============
-
+# Requirements
 I am running on an ubuntu server - please report other platforms!
 
-Attributes
-==========
+# Attributes
 
-node['bind']['id'] = Hash.new
-
+List of forwarders where requests should be forwarded to.
+```ruby
 default['bind']['forward'] = Array.new
-
-List of forwarders (where requests should be forwarded to)
-
-
-default['bind']['transfer'] = Array.new
+```
 
 List of servers where zone updates should be transferred to.
+```ruby
+default['bind']['transfer'] = Array.new
+```
 
-Usage
-=====
+# Usage
 Most complex setup:
-
+```ruby
 bind9_zone "example.com" do
   email "hostmaster.example.com" #convert your emailaddress-@ into a .
   nameserver nses
@@ -42,19 +39,21 @@ bind9_zone "example.com" do
   xmpp "xmpp.example.com"
 end
 
-
-
 node.set['bind']['transfer'] = ["192.168.178.1","192.168.178.2"]
 node.set['bind']['forward'] = ["172.0.0.1", "4.2.2.4"]
 
 include_recipe "bind9"
+```
 
+Make sure to set up all zones, before calling the recipe.
+Recipe writes named.conf.local and makes zones known to bind.
 
-See resources/zone.rb for more attributes for bind9_zone
+See resources/zone.rb for more zone-file attributes for bind9_zone
 
-Ideas/TODO
-==========
-
+# Ideas/TODO
 - Add NS slave recipe
 - Add ipv6
+
+# Contact 
+see metadata.rb
 
