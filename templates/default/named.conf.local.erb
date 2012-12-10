@@ -1,0 +1,17 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+include "/etc/bind/zones.rfc1918";
+
+<% @zones.uniq.each do |zone| -%>
+zone "<%= zone %>" in {
+  type master;
+  <% if zone.include? "arpa" %>
+    notify no;
+  <% end %>
+  file "/etc/bind/chef/<%= zone %>";
+};
+<% end -%>

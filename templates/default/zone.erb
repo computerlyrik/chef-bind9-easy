@@ -1,0 +1,27 @@
+$TTL <%= @new_resource.ttl %>
+$ORIGIN <%= @new_resource.domain%>.
+<%= @new_resource.domain%>.		IN	SOA	<%= @new_resource.nameserver[0]%>. <%= @new_resource.email%>. (
+
+				<%= node['bind']['id'][@new_resource.domain] %>
+				<%= @new_resource.refresh %>
+				<%= @new_resource.retry %>
+				<%= @new_resource.expire %>
+				<%= @new_resource.neg_ttl %>
+)
+
+<% @new_resource.nameserver.each do |ns| %>
+@           IN NS    <%=ns%>.
+<% end %>
+
+<% if @new_resource.mailserver %>
+@						IN	MX	10 <%=@new_resource.mailserver%>.
+<% end %>
+
+<% @hosts.each do |name,opts| %>
+<%=name%>			IN		<%=opts[:type]%>		<%=opts[:priority]%>		<%= opts[:ip_name] %>
+<%end%>
+
+<% @machines.each do |machine| %>
+<%=machine['hostname']%>			IN		A		<%= machine['ipaddress'] %>
+<%end%>
+

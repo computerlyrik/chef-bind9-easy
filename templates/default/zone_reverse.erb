@@ -1,0 +1,18 @@
+$TTL <%= @new_resource.ttl %>
+
+@		IN	SOA	<%= @new_resource.nameserver[0]%>. <%= @new_resource.email%>. (
+
+				<%= node['bind']['id'][@new_resource.domain] %>
+				<%= @new_resource.refresh %>
+				<%= @new_resource.retry %>
+				<%= @new_resource.expire %>
+				<%= @new_resource.neg_ttl %>
+)
+
+<% @new_resource.nameserver.each do |ns| %>
+@           IN NS    <%=ns%>.
+<% end %>
+
+<% @ips.each do |ip,fqdn| %>
+<%=ip%>		PTR		<%=fqdn%>.		
+<%end%>
