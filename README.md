@@ -1,28 +1,28 @@
 Description
 ===========
 
+This cookbook is designed to easy setup and operate bind9 DNS server.
+
 Autoconfigures bind9 Server.
 Uses chef search and user input to find all clients.
 
 Implements a Zone LWRP which sets up forward and reverse zones.
 
-
 Requirements
 ============
 
-I am running on an ubuntu server - please report other platforms!
+Currently this cookbook is running on an ubuntu server - please report other platforms!
 
 Attributes
 ==========
 
-node['bind']['id'] = Hash.new
 
-default['bind']['forward'] = Array.new
+node['bind']['forward'] = Array.new
 
 List of forwarders (where requests should be forwarded to)
 
 
-default['bind']['transfer'] = Array.new
+node['bind']['transfer'] = Array.new
 
 List of servers where zone updates should be transferred to.
 
