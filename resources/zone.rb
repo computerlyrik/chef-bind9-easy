@@ -37,3 +37,5 @@ attribute :mailserver, :kind_of => [String, Hash]
 attribute :xmpp, :kind_of => String
 
 attribute :hosts, :kind_of => Hash, :default => Hash.new
+
+attribute :subzones, :kind_of => Hash, :default => Hash.new
