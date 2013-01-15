@@ -33,7 +33,7 @@ attribute :neg_ttl, :kind_of => Integer, :default => 3600
 
 
 attribute :nameserver, :kind_of => Array, :default => Array.new
-attribute :mailserver, :kind_of => String
+attribute :mailserver, :kind_of => [String, Hash]
 attribute :xmpp, :kind_of => String
 
 attribute :hosts, :kind_of => Hash, :default => Hash.new

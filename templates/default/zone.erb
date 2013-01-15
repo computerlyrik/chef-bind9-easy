@@ -13,8 +13,16 @@ $ORIGIN <%= @new_resource.domain%>.
 @           IN NS    <%=ns%>.
 <% end %>
 
-<% if @new_resource.mailserver %>
+<% @new_resource.subzones.each do |subnet,ns| %>
+<%=subnet%>           IN NS    <%=ns%>.
+<% end %>
+
+<% if @new_resource.mailserver.is_a?(String) %>
 @						IN	MX	10 <%=@new_resource.mailserver%>.
+<% elsif @new_resource.mailserver.is_a?(Hash) %>
+  <% @new_resource.mailserver.each do |domain,server| %>
+<%=domain == "@" ? "@" : domain+"." %>						IN	MX	10 <%=server%>.
+  <% end %>
 <% end %>
 
 <% @hosts.each do |name,opts| %>
