@@ -27,7 +27,7 @@ default['bind']['transfer'] = Array.new
 # Usage
 Most complex setup:
 ```ruby
-bind9_zone "example.com" do
+bind9_easy_zone "example.com" do
   email "hostmaster.example.com" #convert your emailaddress-@ into a .
   nameserver nses
   hosts ({
@@ -48,7 +48,7 @@ include_recipe "bind9"
 Make sure to set up all zones, before calling the recipe.
 Recipe writes named.conf.local and makes zones known to bind.
 
-See resources/zone.rb for more zone-file attributes for bind9_zone
+See resources/zone.rb for more zone-file attributes for bind9_easy_zone
 
 # Ideas/TODO
 - Add NS slave recipe

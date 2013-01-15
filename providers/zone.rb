@@ -65,7 +65,7 @@ action :create do
   #reload does not work properly
   template "/etc/bind/chef/#{new_resource.domain}" do
     source "zone.erb"
-    cookbook "bind9"
+    cookbook "bind9-easy"
     owner "bind"
     group "bind"
     mode 0600
@@ -109,7 +109,7 @@ action :create do
 
     template "/etc/bind/chef/#{zone_name}" do
       source "zone_reverse.erb"
-      cookbook "bind9"
+      cookbook "bind9-easy"
       owner "bind"
       group "bind"
       mode 0600
