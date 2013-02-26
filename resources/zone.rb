@@ -27,8 +27,8 @@ attribute :email, :kind_of => String, :required => true
 
 
 attribute :refresh, :kind_of => Integer, :default => 3600
-attribute :retry, :kind_of => Integer, :default => 600
-attribute :expire, :kind_of => Integer, :default => 86400
+attribute :retry, :kind_of => Integer, :default => 900 #Denic minimum
+attribute :expire, :kind_of => Integer, :default => 604800 #Denic minimum
 attribute :neg_ttl, :kind_of => Integer, :default => 3600
 
 
