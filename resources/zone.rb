@@ -31,6 +31,7 @@ attribute :retry, :kind_of => Integer, :default => 900 #Denic minimum
 attribute :expire, :kind_of => Integer, :default => 604800 #Denic minimum
 attribute :neg_ttl, :kind_of => Integer, :default => 3600
 
+attribute :allow_update, :kind_of => Array
 
 attribute :nameserver, :kind_of => Array, :default => Array.new
 attribute :mailserver, :kind_of => [String, Hash]

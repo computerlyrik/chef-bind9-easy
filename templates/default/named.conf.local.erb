@@ -13,5 +13,8 @@ zone "<%= zone %>" in {
     notify no;
   <% end %>
   file "/etc/bind/chef/<%= zone %>";
+  <% if zone.allow_update %>
+   allow-update <%= zone.allow_update.first %>; };
+  <% end %>
 };
 <% end -%>
