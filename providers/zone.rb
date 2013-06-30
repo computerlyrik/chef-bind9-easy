@@ -61,8 +61,8 @@ action :create do
   
   #Set up counting variable for bind id
   node.set_unless['bind']['id'][@new_resource.domain] = 1
-  machines = search(:node, "domain:#{new_resource.domain}").sort ##TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
-  #reload does not work properly
+  machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc") ##TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
+  #reload action does not work properly
   template "/etc/bind/chef/#{new_resource.domain}" do
     source "zone.erb"
     cookbook "bind9-easy"
