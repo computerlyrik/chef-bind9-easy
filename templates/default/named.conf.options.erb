@@ -25,8 +25,11 @@ options {
         auth-nxdomain no;    # conform to RFC1035
         listen-on-v6 { any; };
   allow-transfer {
-  <% node['bind']['transfer'].each do |srv| %>
-    <%=srv%>;
-  <% end %>
+    <% node['bind']['transfer'].each do |srv| %>
+      <%=srv%>;
+    <% end %>
+  };
+  allow-query-cache {
+    <% node['bind']['allow-query-cache'] %>;
   };
 };
