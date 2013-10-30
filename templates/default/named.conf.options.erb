@@ -30,6 +30,8 @@ options {
     <% end %>
   };
   allow-query-cache {
-    <%= node['bind']['allow-query-cache'] %>;
+    <% node['bind']['query-cache'].each do |srv| %>
+      <%=srv%>;
+    <% end %>
   };
 };
