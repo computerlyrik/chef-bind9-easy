@@ -84,7 +84,7 @@ action :create do
   ruby_block "update-id_#{new_resource.domain}" do
     block do
       if update
-        node.set['bind9-easy']['id'][new_resource.domain] = node['bind']['id'][new_resource.domain]+1
+        node.set['bind9-easy']['id'][new_resource.domain] = node['bind9-easy']['id'][new_resource.domain]+1
         update = false
       end
     end
