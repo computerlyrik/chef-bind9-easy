@@ -60,7 +60,7 @@ action :create do
   directory "/etc/bind/chef/"
   
   #Set up counting variable for bind id
-  node.set_unless['bind']['id'][@new_resource.domain] = 1
+  node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
   machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc") ##TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
   #reload action does not work properly
   template "/etc/bind/chef/#{new_resource.domain}" do
@@ -84,7 +84,7 @@ action :create do
   ruby_block "update-id_#{new_resource.domain}" do
     block do
       if update
-        node.set['bind']['id'][new_resource.domain] = node['bind']['id'][new_resource.domain]+1
+        node.set['bind9-easy']['id'][new_resource.domain] = node['bind']['id'][new_resource.domain]+1
         update = false
       end
     end
@@ -102,7 +102,7 @@ action :create do
     zone_name = "#{iparr[2]}.#{iparr[1]}.#{iparr[0]}.in-addr.arpa"
     unless zones[zone_name] then zones[zone_name] = Hash.new end
     zones[zone_name][iparr[3]] = machine['fqdn']
-    node.set_unless['bind']['id'][zone_name] = 1
+    node.set_unless['bind9-easy']['id'][zone_name] = 1
   end
   
   zones.each do |zone_name,ips|
@@ -126,7 +126,7 @@ action :create do
     ruby_block "update-id_#{zone_name}" do
       block do
         if update_reverse
-          node.set['bind']['id'][zone_name] = node['bind']['id'][zone_name]+1
+          node.set['bind9-easy']['id'][zone_name] = node['bind9-easy']['id'][zone_name]+1
           update_reverse = false
         end
       end

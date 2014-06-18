@@ -2,7 +2,7 @@ $TTL <%= @new_resource.ttl %>
 
 @		IN	SOA	<%= @new_resource.nameserver[0]%>. <%= @new_resource.email%>. (
 
-				<%= node['bind']['id'][@new_resource.domain] %>
+				<%= node['bind9-easy']['id'][@new_resource.domain] %>
 				<%= @new_resource.refresh %>
 				<%= @new_resource.retry %>
 				<%= @new_resource.expire %>

@@ -30,7 +30,7 @@ template "/etc/bind/named.conf.local" do
   group "bind"
   mode 0644
   variables(
-    :zones => node['bind']['id'].keys.sort
+    :zones => node['bind9-easy']['id'].keys.sort
   )
   notifies :reload, resources(:service => "bind9")
 end

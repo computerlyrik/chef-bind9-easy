@@ -11,7 +11,7 @@ options {
         // the all-0's placeholder.
 
   forwarders {
-  <% node['bind']['forward'].each do |srv| %>
+  <% node['bind9-easy']['forward'].each do |srv| %>
     <%=srv%>;
   <% end %>
   };
@@ -25,12 +25,12 @@ options {
         auth-nxdomain no;    # conform to RFC1035
         listen-on-v6 { any; };
   allow-transfer {
-    <% node['bind']['transfer'].each do |srv| %>
+    <% node['bind9-easy']['transfer'].each do |srv| %>
       <%=srv%>;
     <% end %>
   };
   allow-query-cache {
-    <% node['bind']['query-cache'].each do |srv| %>
+    <% node['bind9-easy']['query-cache'].each do |srv| %>
       <%=srv%>;
     <% end %>
   };
