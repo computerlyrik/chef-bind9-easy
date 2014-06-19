@@ -29,25 +29,48 @@ List of servers where zone updates should be transferred to.
 default['bind']['transfer'] = Array.new
 ```
 
+List of trusted servers allowed to query
+```ruby
+default['bind']['trusted_server'] = Array.new
+```
+
 # Usage
 Most complex setup:
 ```ruby
-bind9_easy_zone "example.com" do
-  email "hostmaster.example.com" #convert your emailaddress-@ into a .
-  nameserver nses
+nameservers = ["ns.example.com", "ns1.first-ns.de", "robotns2.second-ns.de", "robotns3.second-ns.com" ]
+
+# Configures a automatic zone - all chef clients in this domain will be added magically
+bind9_easy_zone "example.com" do 
+  email "hostmaster.example.com"
+  nameserver nameservers
   hosts ({
-    "@" =>  "192.168.178.10",
+    "@" =>  "192.168.2.1", #Generate an A Record
     "not-a-chef-client" => "192.168.178.250", #results in a A record
     "my-hot-box" => "not-a-chef-client" #results in a CNAME record
   })
-  mailserver "mail.example.com"
-  xmpp "xmpp.example.com"
+  mailserver ({ "@" => "mail.example.com",
+    "lists.example.com" => "lists.example.com"}) # another mailserver for subdomain
+  spf true
+  xmpp "xmpp.example.com" #Assuming xmpp is provided by automagic configuration
+  subzones ({
+    "lan.ns.example.com" => "ns.example.com",
+    "v6.ns.example.com" => "ns.example.com",})
 end
 
-node.set['bind']['transfer'] = ["192.168.178.1","192.168.178.2"]
-node.set['bind']['forward'] = ["172.0.0.1", "4.2.2.4"]
+# generate a Subdomain-Zone for v6 Network
+bind9_easy_zone "v6.example.com" do
+  email "hostmaster.example.com"
+  nameserver nameservers
+end
 
-include_recipe "bind9"
+# generate a Subdomain-Zone for internal nat
+bind9_easy_zone "lan.example.com" do
+  email "hostmaster.example.com"
+  nameserver nameservers
+  hosts ({
+    "@" =>  "172.2.2.1",
+  })
+end
 ```
 
 Make sure to set up all zones, before calling the recipe.
