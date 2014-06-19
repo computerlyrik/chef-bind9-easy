@@ -19,12 +19,6 @@
 
 package "bind9"
 
-service "bind9" do
-  supports :reload => true, :restart => true
-  action :start
-end 
-
-
 template "/etc/bind/named.conf.local" do
   owner "bind"
   group "bind"
@@ -32,12 +26,17 @@ template "/etc/bind/named.conf.local" do
   variables(
     :zones => node['bind9-easy']['id'].keys.sort
   )
-  notifies :reload, resources(:service => "bind9")
+  notifies :reload, 'service[bind9]'
 end
 
 template "/etc/bind/named.conf.options" do
   owner "bind"
   group "bind"
   mode 0644
-  notifies :reload, resources(:service => "bind9")
+  notifies :restart, 'service[bind9]'
 end
+
+service "bind9" do
+  supports :reload => true, :restart => true
+  action :start
+end 
