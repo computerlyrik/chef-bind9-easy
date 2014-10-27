@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/computerlyrik/chef-bind9-easy.png)](https://travis-ci.org/computerlyrik/chef-bind9-easy)
+
 https://github.com/computerlyrik/chef-bind9-easy
 
 
