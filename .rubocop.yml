@@ -1,0 +1,20 @@
+AllCops:
+  Exclude:
+    - vendor/**
+    - metadata.rb
+    - tests/integration/cookbooks/prosody-test/metadata.rb
+
+AlignParameters:
+  Enabled: false
+Encoding:
+  Enabled: false
+HashSyntax:
+  Enabled: false
+StringLiterals:
+  Enabled: false
+LineLength:
+  Enabled: false
+MethodLength:
+  Max: 30
+Style/FileName:
+  Enabled: false
