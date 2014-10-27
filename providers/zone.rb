@@ -17,12 +17,11 @@
 # limitations under the License.
 #
 
-
 IP_CIDR_VALID_REGEX = /\b(?:\d{1,3}\.){3}\d{1,3}\b(\/[0-3]?[0-9])?/
 
 action :create do
   hosts = Hash.new
-  @new_resource.hosts.each do |name,ip_name|
+  @new_resource.hosts.each do |name, ip_name|
     hosts[name] = Hash.new
     hosts[name][:name] = name
     if IP_CIDR_VALID_REGEX.match(ip_name)
@@ -53,16 +52,14 @@ action :create do
   service "bind9" do
     supports :reload => true, :restart => true
     action :start
-  end 
-  
+  end
 
-  
   directory "/etc/bind/chef/"
-  
-  #Set up counting variable for bind id
+
+  # Set up counting variable for bind id
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
-  machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc") ##TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
-  #reload action does not work properly
+  machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc") # #TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
+  # reload action does not work properly
   template "/etc/bind/chef/#{new_resource.domain}" do
     source "zone.erb"
     cookbook "bind9-easy"
@@ -76,15 +73,14 @@ action :create do
     )
     notifies :restart, resources(:service => "bind9")
   end
-  
-  
+
   update = true
-      
-  #break the loop between template and number increment with a helper variable
+
+  # break the loop between template and number increment with a helper variable
   ruby_block "update-id_#{new_resource.domain}" do
     block do
       if update
-        node.set['bind9-easy']['id'][new_resource.domain] = node['bind9-easy']['id'][new_resource.domain]+1
+        node.set['bind9-easy']['id'][new_resource.domain] = node['bind9-easy']['id'][new_resource.domain] + 1
         update = false
       end
     end
@@ -92,10 +88,9 @@ action :create do
     subscribes :create, resources(:template => "/etc/bind/chef/#{new_resource.domain}"), :immediately
     notifies :create, resources(:template => "/etc/bind/chef/#{new_resource.domain}")
   end
-  
-  
-  ##REVERSE ZONE(s)
-  
+
+  # #REVERSE ZONE(s)
+
   zones = Hash.new
   machines.each do |machine|
     iparr = machine['ipaddress'].split(".")
@@ -104,8 +99,8 @@ action :create do
     zones[zone_name][iparr[3]] = machine['fqdn']
     node.set_unless['bind9-easy']['id'][zone_name] = 1
   end
-  
-  zones.each do |zone_name,ips|
+
+  zones.each do |zone_name, ips|
 
     template "/etc/bind/chef/#{zone_name}" do
       source "zone_reverse.erb"
@@ -117,16 +112,16 @@ action :create do
         :ips => ips.sort,
         :new_resource => new_resource
       )
-      #reload does not work properly
+      # reload does not work properly
       notifies :restart, resources(:service => "bind9")
     end
-  
+
     update_reverse = true
-    #break the loop between template and number increment with a helper variable
+    # break the loop between template and number increment with a helper variable
     ruby_block "update-id_#{zone_name}" do
       block do
         if update_reverse
-          node.set['bind9-easy']['id'][zone_name] = node['bind9-easy']['id'][zone_name]+1
+          node.set['bind9-easy']['id'][zone_name] = node['bind9-easy']['id'][zone_name] + 1
           update_reverse = false
         end
       end
@@ -134,6 +129,6 @@ action :create do
       subscribes :create, resources(:template => "/etc/bind/chef/#{zone_name}"), :immediately
       notifies :create, resources(:template => "/etc/bind/chef/#{zone_name}")
     end
-    
+
   end
 end

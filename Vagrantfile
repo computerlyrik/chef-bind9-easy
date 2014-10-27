@@ -17,12 +17,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
 
   # Every Vagrant virtual environment requires a box to build off of.
-  # If this value is a shorthand to a box in Vagrant Cloud then 
+  # If this value is a shorthand to a box in Vagrant Cloud then
   # config.vm.box_url doesn't need to be specified.
   config.vm.box = "Berkshelf-CentOS-6.3-x86_64-minimal"
 
   # The url from where the 'config.vm.box' box will be fetched if it
-  # is not a Vagrant Cloud box and if it doesn't already exist on the 
+  # is not a Vagrant Cloud box and if it doesn't already exist on the
   # user's system.
   # config.vm.box_url = "https://dl.dropbox.com/u/31081437/Berkshelf-CentOS-6.3-x86_64-minimal.box"
 
@@ -82,7 +82,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-        "recipe[bind9-easy::default]"
+      "recipe[bind9-easy::default]"
     ]
   end
 end
