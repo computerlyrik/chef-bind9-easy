@@ -58,7 +58,11 @@ action :create do
 
   # Set up counting variable for bind id
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
-  machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc") # #TODO SEARCH ONLY FOR EXTERNAL AVALIBLE IPADDRESSES
+  if Chef::Config[:solo]
+    Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
+  else
+    machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
+  end
   # reload action does not work properly
   template "/etc/bind/chef/#{new_resource.domain}" do
     source "zone.erb"
@@ -71,7 +75,7 @@ action :create do
       :machines => machines,
       :new_resource => new_resource
     )
-    notifies :restart, resources(:service => "bind9")
+    notifies :restart, "service[bind9]"
   end
 
   update = true
@@ -85,8 +89,8 @@ action :create do
       end
     end
     action :nothing
-    subscribes :create, resources(:template => "/etc/bind/chef/#{new_resource.domain}"), :immediately
-    notifies :create, resources(:template => "/etc/bind/chef/#{new_resource.domain}")
+    subscribes :create, "template[/etc/bind/chef/#{new_resource.domain}]", :immediately
+    notifies :create, "template[/etc/bind/chef/#{new_resource.domain}]"
   end
 
   # #REVERSE ZONE(s)
@@ -95,7 +99,7 @@ action :create do
   machines.each do |machine|
     iparr = machine['ipaddress'].split(".")
     zone_name = "#{iparr[2]}.#{iparr[1]}.#{iparr[0]}.in-addr.arpa"
-    zones[zone_name] = Hash.new unless zones[zone_name] 
+    zones[zone_name] = Hash.new unless zones[zone_name]
     zones[zone_name][iparr[3]] = machine['fqdn']
     node.set_unless['bind9-easy']['id'][zone_name] = 1
   end
@@ -113,7 +117,7 @@ action :create do
         :new_resource => new_resource
       )
       # reload does not work properly
-      notifies :restart, resources(:service => "bind9")
+      notifies :restart, "service[bind9]"
     end
 
     update_reverse = true
@@ -126,9 +130,8 @@ action :create do
         end
       end
       action :nothing
-      subscribes :create, resources(:template => "/etc/bind/chef/#{zone_name}"), :immediately
-      notifies :create, resources(:template => "/etc/bind/chef/#{zone_name}")
+      subscribes :create, "template[/etc/bind/chef/#{zone_name}]", :immediately
+      notifies :create, "template[/etc/bind/chef/#{zone_name}]"
     end
-
   end
 end
