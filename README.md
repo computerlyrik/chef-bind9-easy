@@ -51,6 +51,7 @@ in your run list.
 
 This autoconfigures a basic setup for your current domain.
 For more information see ```attributes/easy.rb``` and ```recipes/easy.rb```
+Also try ```kitchen``` to see an example.
 
 ## Most complex setup:
 ```ruby
