@@ -46,7 +46,7 @@ bind9-easy::easy
 in your run list.
 
 This autoconfigures a basic setup for your current domain.
-For more information see '''attributes/easy.rb''' and '''recipes/easy.rb'''
+For more information see ```attributes/easy.rb``` and ```recipes/easy.rb```
 
 ## Most complex setup:
 ```ruby
