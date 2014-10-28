@@ -27,17 +27,18 @@ I am running on an ubuntu server - please report other platforms!
 
 List of forwarders where requests should be forwarded to.
 ```ruby
-default['bind']['forward'] = Array.new
+default['bind9-easy']['forward'] = []
+
 ```
 
 List of servers where zone updates should be transferred to.
 ```ruby
-default['bind']['transfer'] = Array.new
+default['bind9-easy']['transfer'] = []
 ```
 
 List of trusted servers allowed to query
 ```ruby
-default['bind']['trusted_server'] = Array.new
+default['bind9-easy']['trusted_server'] = []
 ```
 
 # Usage
