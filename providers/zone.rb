@@ -95,7 +95,7 @@ action :create do
   machines.each do |machine|
     iparr = machine['ipaddress'].split(".")
     zone_name = "#{iparr[2]}.#{iparr[1]}.#{iparr[0]}.in-addr.arpa"
-    unless zones[zone_name] then zones[zone_name] = Hash.new end
+    zones[zone_name] = Hash.new unless zones[zone_name] 
     zones[zone_name][iparr[3]] = machine['fqdn']
     node.set_unless['bind9-easy']['id'][zone_name] = 1
   end
