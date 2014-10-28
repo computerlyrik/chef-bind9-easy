@@ -16,6 +16,9 @@ Supports
 - Transfer servers
 - Custom zone entries
 - Reverse zones
+- MX
+- SPF
+- XMPP-Entries
 
 # Requirements
 I am running on an ubuntu server - please report other platforms!
