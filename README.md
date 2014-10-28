@@ -21,7 +21,7 @@ Supports
 - XMPP-Entries
 
 # Requirements
-I am running on an ubuntu server - please report other platforms!
+I am running on an debian/ubuntu server - please report other platforms!
 
 # Attributes
 
