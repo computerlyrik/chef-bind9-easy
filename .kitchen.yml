@@ -11,5 +11,5 @@ platforms:
 suites:
   - name: default
     run_list:
-    - recipe[bind9-easy]
+    - recipe[bind9-easy::easy]
     attributes:

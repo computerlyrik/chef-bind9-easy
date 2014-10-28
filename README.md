@@ -38,7 +38,16 @@ default['bind']['trusted_server'] = Array.new
 ```
 
 # Usage
-Most complex setup:
+## Easy Setup
+Just include 
+```ruby
+bind9-easy::easy```
+in your run list.
+
+This autoconfigures a basic setup for your current domain.
+For more information see '''attributes/easy.rb''' and '''recipes/easy.rb'''
+
+## Most complex setup:
 ```ruby
 nameservers = ["ns.example.com", "ns1.first-ns.de", "robotns2.second-ns.de", "robotns3.second-ns.com" ]
 
