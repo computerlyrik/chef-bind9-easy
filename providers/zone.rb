@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include Chef::DSL::IncludeRecipe
+
 IP_CIDR_VALID_REGEX = /\b(?:\d{1,3}\.){3}\d{1,3}\b(\/[0-3]?[0-9])?/
 
 action :create do
@@ -134,4 +136,6 @@ action :create do
       notifies :create, "template[/etc/bind/chef/#{zone_name}]"
     end
   end
+  new_resource.updated_by_last_action(true)
+  include_recipe 'bind9-easy::generate_zones'
 end

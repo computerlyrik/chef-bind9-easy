@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: bind9
-# Recipe:: default
+# Recipe:: generate_zones
 #
-# Copyright 2012, 2014 computerlyrik
+# Copyright 2014, computerlyrik
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,24 @@
 # limitations under the License.
 #
 
-package "bind9"
+template "/etc/bind/named.conf.local" do
+  owner "bind"
+  group "bind"
+  mode 0644
+  variables(
+    :zones => node['bind9-easy']['id'].keys.sort
+  )
+  notifies :reload, 'service[bind9]'
+end
+
+template "/etc/bind/named.conf.options" do
+  owner "bind"
+  group "bind"
+  mode 0644
+  notifies :restart, 'service[bind9]'
+end
+
+service "bind9" do
+  supports :reload => true, :restart => true
+  action :start
+end

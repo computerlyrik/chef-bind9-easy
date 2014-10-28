@@ -55,6 +55,8 @@ Also try ```kitchen``` to see an example.
 
 ## Most complex setup:
 ```ruby
+include_recipe 'bind9-easy'
+
 nameservers = ["ns.example.com", "ns1.first-ns.de", "robotns2.second-ns.de", "robotns3.second-ns.com" ]
 
 # Configures a automatic zone - all chef clients in this domain will be added magically
@@ -90,9 +92,6 @@ bind9_easy_zone "lan.example.com" do
   })
 end
 ```
-
-Make sure to set up all zones, before calling the recipe.
-Recipe writes named.conf.local and makes zones known to bind.
 
 See resources/zone.rb for more zone-file attributes for bind9_easy_zone
 
