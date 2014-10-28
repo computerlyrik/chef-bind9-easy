@@ -62,6 +62,7 @@ action :create do
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
   if Chef::Config[:solo]
     Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
+    machines = []
   else
     machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
   end
