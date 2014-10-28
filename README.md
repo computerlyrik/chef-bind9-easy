@@ -41,7 +41,8 @@ default['bind']['trusted_server'] = Array.new
 ## Easy Setup
 Just include 
 ```ruby
-bind9-easy::easy```
+bind9-easy::easy
+```
 in your run list.
 
 This autoconfigures a basic setup for your current domain.
