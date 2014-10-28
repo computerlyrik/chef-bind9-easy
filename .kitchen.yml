@@ -7,9 +7,10 @@ provisioner:
 
 platforms:
   - name: debian-7.7
+  - name: ubuntu-12.04
+  - name: ubuntu-14.04
 
 suites:
   - name: default
     run_list:
     - recipe[bind9-easy::easy]
-    attributes:
