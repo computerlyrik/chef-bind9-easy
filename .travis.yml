@@ -1,0 +1,6 @@
+rvm:
+  - 2.0.0
+before_script:
+  - bundle exec berks install
+script:
+  - bundle exec foodcritic -f any .
