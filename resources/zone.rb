@@ -22,12 +22,12 @@ actions :create
 default_action :create
 
 attribute :domain, :kind_of => String, :name_attribute => true
-attribute :ttl, :kind_of => Integer, :default => 86400
+attribute :ttl, :kind_of => Integer, :default => 86_400
 attribute :email, :kind_of => String, :required => true
 
 attribute :refresh, :kind_of => Integer, :default => 3600
-attribute :retry, :kind_of => Integer, :default => 900 #Denic minimum
-attribute :expire, :kind_of => Integer, :default => 604800 #Denic minimum
+attribute :retry, :kind_of => Integer, :default => 900 # Denic minimum
+attribute :expire, :kind_of => Integer, :default => 604_800 # Denic minimum
 attribute :neg_ttl, :kind_of => Integer, :default => 3600
 
 attribute :nameserver, :kind_of => Array, :default => []
