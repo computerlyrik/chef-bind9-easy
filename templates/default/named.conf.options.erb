@@ -15,6 +15,11 @@ options {
   allow-recursion { trusted; };
   allow-query-cache { trusted; };
 
+
+  rate-limit {
+      responses-per-second 10;
+  };
+
   forwarders {
     <% node['bind9-easy']['forward'].each do |srv| %>
       <%=srv%>;
