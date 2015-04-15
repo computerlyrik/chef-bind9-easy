@@ -23,6 +23,8 @@ template "#{config_dir}/named.conf.local" do
   group node['bind9-easy']['usergroup']
   mode 0644
   variables(
+    :conf_dir => config_dir,
+    :rfc1918 => node['bind9-easy']['rfc1918'],
     :zones => node['bind9-easy']['id'].keys.sort
   )
   notifies :reload, 'service[bind9]'
