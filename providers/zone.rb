@@ -51,7 +51,7 @@ action :create do
       :ip_name => "#{@new_resource.xmpp}."
     }
   end
-  service "bind9" do
+  service node['bind9-easy']['service'] do
     supports :reload => true, :restart => true
     action :start
   end
