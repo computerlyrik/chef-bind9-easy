@@ -4,7 +4,9 @@
 
 // Consider adding the 1918 zones here, if they are not used in your
 // organization
+<% if @rfc1918 != nil %>
 include "<%= @rfc1918 %>";
+<% end %>
 
 <% @zones.uniq.each do |zone| -%>
 zone "<%= zone %>" in {

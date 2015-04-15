@@ -17,5 +17,4 @@ when "redhat", "centos", "fedora"
    default['bind9-easy']['package'] = 'bind'
    default['bind9-easy']['config_dir'] = '/etc/named'
    default['bind9-easy']['usergroup'] = 'named'
-   default['bind9-easy']['rfc1918'] = '/etc/named.rfc1912.zones'
 end
