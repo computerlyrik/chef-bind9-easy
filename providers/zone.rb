@@ -56,7 +56,8 @@ action :create do
     action :start
   end
 
-  directory "/etc/bind/chef/"
+  config_dir = node['bind9-easy']['config_dir']
+  directory config_dir
 
   # Set up counting variable for bind id
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
@@ -67,7 +68,7 @@ action :create do
     machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
   end
   # reload action does not work properly
-  template "/etc/bind/chef/#{new_resource.domain}" do
+  template "#{config_dir}/#{new_resource.domain}" do
     source "zone.erb"
     cookbook "bind9-easy"
     owner "bind"
