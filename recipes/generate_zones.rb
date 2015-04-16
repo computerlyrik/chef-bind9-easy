@@ -37,6 +37,13 @@ template "#{config_dir}/named.conf.options" do
   notifies :restart, 'service[bind9]'
 end
 
+template "/etc/named.conf" do
+  owner node['bind9-easy']['usergroup']
+  group node['bind9-easy']['usergroup']
+  mode 0644
+  notifies :restart, 'service[bind9]'
+end
+
 service 'bind9' do
   service_name node['bind9-easy']['service']
   supports :reload => true, :restart => true
