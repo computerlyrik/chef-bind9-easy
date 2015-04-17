@@ -59,6 +59,12 @@ action :create do
 
   config_dir = node['bind9-easy']['config_dir']
   directory "#{config_dir}/chef"
+  directory "#{config_dir}/chef" do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
 
   # Set up counting variable for bind id
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
