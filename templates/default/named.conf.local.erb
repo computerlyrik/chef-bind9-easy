@@ -4,7 +4,9 @@
 
 // Consider adding the 1918 zones here, if they are not used in your
 // organization
-include "/etc/bind/zones.rfc1918";
+<% if @rfc1918 != nil %>
+include "<%= @rfc1918 %>";
+<% end %>
 
 <% @zones.uniq.each do |zone| -%>
 zone "<%= zone %>" in {
@@ -12,6 +14,6 @@ zone "<%= zone %>" in {
   <% if zone.include? "arpa" %>
     notify no;
   <% end %>
-  file "/etc/bind/chef/<%= zone %>";
+  file "<%= @conf_dir %>/chef/<%= zone %>";
 };
 <% end -%>

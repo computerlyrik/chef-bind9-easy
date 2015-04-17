@@ -34,6 +34,5 @@ $ORIGIN <%= @new_resource.domain%>.
 <%end%>
 
 <% @machines.each do |machine| %>
-<%=machine['hostname']%>			IN		A		<%= machine['ipaddress'] %>
+<%=machine['fqdn'].gsub(Regexp.new(".#{@new_resource.domain}"), '')%>			IN		A		<%= machine['ipaddress'] %>
 <%end%>
-

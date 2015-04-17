@@ -16,25 +16,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+config_dir = node['bind9-easy']['config_dir']
 
-template "/etc/bind/named.conf.local" do
-  owner "bind"
-  group "bind"
+template "#{config_dir}/named.conf.local" do
+  owner node['bind9-easy']['usergroup']
+  group node['bind9-easy']['usergroup']
   mode 0644
   variables(
+    :conf_dir => config_dir,
+    :rfc1918 => node['bind9-easy']['rfc1918'],
     :zones => node['bind9-easy']['id'].keys.sort
   )
   notifies :reload, 'service[bind9]'
 end
 
-template "/etc/bind/named.conf.options" do
-  owner "bind"
-  group "bind"
+template "#{config_dir}/named.conf.options" do
+  owner node['bind9-easy']['usergroup']
+  group node['bind9-easy']['usergroup']
   mode 0644
   notifies :restart, 'service[bind9]'
 end
 
-service "bind9" do
+template "/etc/named.conf" do
+  source "rhel_named.conf.erb"
+  owner node['bind9-easy']['usergroup']
+  group node['bind9-easy']['usergroup']
+  mode 0644
+  notifies :restart, 'service[bind9]'
+end
+
+service 'bind9' do
+  service_name node['bind9-easy']['service']
   supports :reload => true, :restart => true
   action :start
 end

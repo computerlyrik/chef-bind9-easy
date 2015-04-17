@@ -51,12 +51,19 @@ action :create do
       :ip_name => "#{@new_resource.xmpp}."
     }
   end
-  service "bind9" do
+  service 'bind9' do
+    service_name node['bind9-easy']['service']
     supports :reload => true, :restart => true
     action :start
   end
 
-  directory "/etc/bind/chef/"
+  config_dir = node['bind9-easy']['config_dir']
+  directory "#{config_dir}/chef" do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
 
   # Set up counting variable for bind id
   node.set_unless['bind9-easy']['id'][@new_resource.domain] = 1
@@ -64,14 +71,14 @@ action :create do
     Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
     machines = []
   else
-    machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
+    machines = search(:node, "domain:*.#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
   end
   # reload action does not work properly
-  template "/etc/bind/chef/#{new_resource.domain}" do
+  template "#{config_dir}/chef/#{new_resource.domain}" do
     source "zone.erb"
     cookbook "bind9-easy"
-    owner "bind"
-    group "bind"
+    owner node['bind9-easy']['usergroup']
+    group node['bind9-easy']['usergroup']
     mode 0600
     variables(
       :hosts => hosts.sort,
@@ -92,8 +99,8 @@ action :create do
       end
     end
     action :nothing
-    subscribes :create, "template[/etc/bind/chef/#{new_resource.domain}]", :immediately
-    notifies :create, "template[/etc/bind/chef/#{new_resource.domain}]"
+    subscribes :create, "template[#{config_dir}/chef/#{new_resource.domain}]", :immediately
+    notifies :create, "template[#{config_dir}/chef/#{new_resource.domain}]"
   end
 
   # #REVERSE ZONE(s)
@@ -109,11 +116,11 @@ action :create do
 
   zones.each do |zone_name, ips|
 
-    template "/etc/bind/chef/#{zone_name}" do
+    template "#{config_dir}/chef/#{zone_name}" do
       source "zone_reverse.erb"
       cookbook "bind9-easy"
-      owner "bind"
-      group "bind"
+      owner node['bind9-easy']['usergroup']
+      group node['bind9-easy']['usergroup']
       mode 0600
       variables(
         :ips => ips.sort,
@@ -133,8 +140,8 @@ action :create do
         end
       end
       action :nothing
-      subscribes :create, "template[/etc/bind/chef/#{zone_name}]", :immediately
-      notifies :create, "template[/etc/bind/chef/#{zone_name}]"
+      subscribes :create, "template[#{config_dir}/chef/#{zone_name}]", :immediately
+      notifies :create, "template[#{config_dir}/chef/#{zone_name}]"
     end
   end
   new_resource.updated_by_last_action(true)

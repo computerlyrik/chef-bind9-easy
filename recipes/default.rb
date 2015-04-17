@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-package "bind9"
+package node['bind9-easy']['package']
