@@ -58,7 +58,6 @@ action :create do
   end
 
   config_dir = node['bind9-easy']['config_dir']
-  directory "#{config_dir}/chef"
   directory "#{config_dir}/chef" do
     owner 'root'
     group 'root'
