@@ -66,7 +66,7 @@ action :create do
     Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
     machines = []
   else
-    machines = search(:node, "domain:#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
+    machines = search(:node, "domain:*.#{new_resource.domain}", "X_CHEF_id_CHEF_X asc")
   end
   # reload action does not work properly
   template "#{config_dir}/chef/#{new_resource.domain}" do
