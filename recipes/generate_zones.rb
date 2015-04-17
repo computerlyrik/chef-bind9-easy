@@ -38,6 +38,7 @@ template "#{config_dir}/named.conf.options" do
 end
 
 template "/etc/named.conf" do
+  source "rhel_named.conf.erb"
   owner node['bind9-easy']['usergroup']
   group node['bind9-easy']['usergroup']
   mode 0644
